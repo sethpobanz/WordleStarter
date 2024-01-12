@@ -82,7 +82,7 @@ FIVE_LETTER_WORDS = [
     "bilbo", "biles", "bilge", "bilks", "bills", "billy", "bimas",
     "bimbo", "bindi", "binds", "binge", "bingo", "bints", "biome",
     "biota", "biped", "birch", "birds", "birls", "biros", "birth",
-    "bises", "bisks", "bison", "bitch", "biter", "bites", "bitsy",
+    "bises", "bisks", "bison", "biter", "bites", "bitsy",
     "bitts", "bitty", "bizes", "blabs", "black", "blade", "blahs",
     "blame", "blams", "bland", "blank", "blare", "blase", "blast",
     "blate", "blaze", "bleak", "blear", "bleat", "bleed", "bleep",
