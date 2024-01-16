@@ -3,7 +3,7 @@
 
 import random
 from WordleDictionary import FIVE_LETTER_WORDS
-from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
+from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, MISSING_COLOR, PRESENT_COLOR
 
 def wordle():
     gw = WordleGWindow()
@@ -14,7 +14,20 @@ def wordle():
             word += gw.get_square_letter(0, col)
 
         if word.lower() in FIVE_LETTER_WORDS:
-            gw.show_message("The word you entered is a word!")
+            for col in range(N_COLS):
+                if s[col] == word[col]:
+                    gw.set_square_color(0, col, CORRECT_COLOR)
+                elif s[col] in word:
+                    gw.set_square_color(0, col, PRESENT_COLOR)
+                else:
+                    gw.set_square_color(0, col, MISSING_COLOR)
+
+            # Check if the user guessed the entire word correctly
+            if s.lower() == word.lower():
+                gw.show_message("Congratulations! You guessed the word!")
+
+            # Move on to the next row
+            gw.set_current_row(gw.get_current_row() + 1)
         else:
             gw.show_message("Not in word list")
 
