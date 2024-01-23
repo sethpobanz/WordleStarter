@@ -9,7 +9,7 @@ import atexit
 import math
 import time
 import tkinter
-
+from tkinter import simpledialog, messagebox
 # Constants
 
 N_ROWS = 6			# Number of rows
@@ -63,14 +63,14 @@ class WordleGWindow:
 
     def __init__(self):
         """Creates the Wordle window."""
-
+        self._colorblind_mode = False
         def create_grid():
             return [
                 [
                     WordleSquare(canvas, i, j) for j in range(N_COLS)
                 ] for i in range(N_ROWS)
-            ]
-
+            ]   
+        
         def create_keyboard():
             keys = { }
             nk = len(KEY_LABELS[0])
@@ -90,6 +90,7 @@ class WordleGWindow:
                     x += w + KEY_XSEP
             return keys
 
+        
         def create_message():
             return WordleMessage(self._canvas,
                                  CANVAS_WIDTH / 2,
@@ -171,6 +172,7 @@ class WordleGWindow:
         self._col = 0
         atexit.register(start_event_loop)
 
+    
     def get_square_letter(self, row, col):
         return self._grid[row][col].get_letter()
 
@@ -205,6 +207,46 @@ class WordleGWindow:
     def show_message(self, msg, color="Black"):
         self._message.set_text(msg, color)
 
+    def toggle_color_mode(self, colorblind_mode):
+        if colorblind_mode:
+            # Change the CORRECT_COLOR and PRESENT_COLOR variables for colorblind mode
+            CORRECT_COLOR = "blue"
+            PRESENT_COLOR = "orange"
+        else:
+            # Restore the original colors for default mode
+            CORRECT_COLOR = "#66BB66"
+            PRESENT_COLOR = "#CCBB66"
+
+        # Update colors for existing squares
+        for row in range(N_ROWS):
+            for col in range(N_COLS):
+                current_color = self.get_square_color(row, col)
+                if current_color == "#66BB66":
+                    self.set_square_color(row, col, CORRECT_COLOR)
+                elif current_color == "#CCBB66":
+                    self.set_square_color(row, col, PRESENT_COLOR)
+
+        # Update colors for keys
+        for label in KEY_LABELS[0] + KEY_LABELS[1] + KEY_LABELS[2]:
+            current_color = self.get_key_color(label)
+            if current_color == "#66BB66":
+                self.set_key_color(label, CORRECT_COLOR)
+            elif current_color == "#CCBB66":
+                self.set_key_color(label, PRESENT_COLOR)
+
+    def create_toggle_button(self):
+        toggle_button = tkinter.Button(self._canvas, text="Toggle Color Mode", command=self.toggle_color_mode_button)
+        toggle_button.place(x=CANVAS_WIDTH / 2 - 75, y=CANVAS_HEIGHT - BOTTOM_MARGIN - KEY_HEIGHT - KEY_YSEP)
+        return toggle_button
+
+    def toggle_color_mode_button(self):
+        colorblind_mode = not self._colorblind_mode
+        self.toggle_color_mode(colorblind_mode)
+        self._colorblind_mode = colorblind_mode
+
+    def start_event_loop(self):
+        """Starts the tkinter event loop when the program exits."""
+        self._root.mainloop()
 
 class WordleSquare:
 

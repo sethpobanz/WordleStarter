@@ -12,7 +12,7 @@ def wordle():
         word = ""
         for col in range(N_COLS):
             word += gw.get_square_letter(0, col)
-
+        
         if word.lower() in FIVE_LETTER_WORDS:
             for col in range(N_COLS):
                 if s[col] == word[col]:
@@ -37,12 +37,19 @@ def wordle():
         else:
             gw.show_message("Not in word list")
 
-    
     random_word = random.choice(FIVE_LETTER_WORDS)
+    toggle_button = gw.create_toggle_button()
 
+    gw.add_enter_listener(enter_action)
+
+    # Initialize colorblind_mode variable
+    gw._colorblind_mode = False
+
+    gw.start_event_loop()
     gw.add_enter_listener(enter_action)
 
 # Startup code
 if __name__ == "__main__":
     wordle()
+
 
