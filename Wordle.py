@@ -45,8 +45,8 @@ def wordle():
     # Initialize colorblind_mode variable
     gw._colorblind_mode = False
 
-    gw.start_event_loop()
-    gw.add_enter_listener(enter_action)
+    
+    
 
 # Startup code
 if __name__ == "__main__":

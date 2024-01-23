@@ -226,13 +226,17 @@ class WordleGWindow:
                 elif current_color == "#CCBB66":
                     self.set_square_color(row, col, PRESENT_COLOR)
 
-        # Update colors for keys
-        for label in KEY_LABELS[0] + KEY_LABELS[1] + KEY_LABELS[2]:
-            current_color = self.get_key_color(label)
-            if current_color == "#66BB66":
-                self.set_key_color(label, CORRECT_COLOR)
-            elif current_color == "#CCBB66":
-                self.set_key_color(label, PRESENT_COLOR)
+        # Save color preference for the next row
+        self._color_preference = (CORRECT_COLOR, PRESENT_COLOR)
+
+
+    def save_color_preference(self):
+        # Save the color preference for the next row
+        self._color_preference = (CORRECT_COLOR, PRESENT_COLOR)
+
+    def apply_color_preference(self):
+        # Apply the saved color preference for the next row
+        CORRECT_COLOR, PRESENT_COLOR = self._color_preference
 
     def create_toggle_button(self):
         toggle_button = tkinter.Button(self._canvas, text="Toggle Color Mode", command=self.toggle_color_mode_button)
@@ -243,10 +247,8 @@ class WordleGWindow:
         colorblind_mode = not self._colorblind_mode
         self.toggle_color_mode(colorblind_mode)
         self._colorblind_mode = colorblind_mode
+        self.save_color_preference()
 
-    def start_event_loop(self):
-        """Starts the tkinter event loop when the program exits."""
-        self._root.mainloop()
 
 class WordleSquare:
 
