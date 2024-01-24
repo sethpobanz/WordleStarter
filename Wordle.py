@@ -7,17 +7,22 @@ from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, MISSING
 
 def wordle():
     gw = WordleGWindow()
+    toggle_button = gw.create_toggle_button()
 
-    def enter_action(s):
-        word = ""
-        for col in range(N_COLS):
-            word += gw.get_square_letter(0, col)
+    # occurs only when user presses/selects "Enter"
+    def enter_action(s, random_word): 
+
+        # set variable to the selected randomized word (now it should stay for the whole
+        # game until new game is played)
+        word = random_word
         
-        if word.lower() in FIVE_LETTER_WORDS:
-            for col in range(N_COLS):
-                if s[col] == word[col]:
+        # first if statement checks to see if user entered valid word, then assigns all chars
+        # with a color that shows if it matches in some way with the randomized word
+        if s.lower() in FIVE_LETTER_WORDS:
+            for col, char in enumerate(random_word):
+                if s[col].lower() == char.lower():
                     gw.set_square_color(gw.get_current_row(), col, CORRECT_COLOR)
-                elif s[col] in word:
+                elif s[col].lower() in random_word.lower():
                     gw.set_square_color(gw.get_current_row(), col, PRESENT_COLOR)
                 else:
                     gw.set_square_color(gw.get_current_row(), col, MISSING_COLOR)
@@ -38,15 +43,14 @@ def wordle():
             gw.show_message("Not in word list")
 
     random_word = random.choice(FIVE_LETTER_WORDS)
-    toggle_button = gw.create_toggle_button()
+    
+    gw.show_message(random_word)
 
-    gw.add_enter_listener(enter_action)
+    # used the lambda feature that allows the s value AND the random_word variable into the method 
+    gw.add_enter_listener(lambda s: enter_action(s, random_word))
 
     # Initialize colorblind_mode variable
     gw._colorblind_mode = False
-
-    
-    
 
 # Startup code
 if __name__ == "__main__":
