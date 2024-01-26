@@ -201,13 +201,26 @@ class WordleGWindow:
             self.set_square_letter(row, col, " ")
             self.set_square_color(row, col, UNKNOWN_COLOR)
 
+        # Apply the saved color preference for the next row
+        if hasattr(self, '_color_preference'):
+            CORRECT_COLOR, PRESENT_COLOR = self._color_preference
+            for col in range(N_COLS):
+                current_color = self.get_square_color(row, col)
+                if current_color == "#66BB66":
+                    self.set_square_color(row, col, CORRECT_COLOR)
+                elif current_color == "#CCBB66":
+                    self.set_square_color(row, col, PRESENT_COLOR)
+
     def add_enter_listener(self, fn):
         self._enter_listeners.append(fn)
 
     def show_message(self, msg, color="Black"):
         self._message.set_text(msg, color)
 
+    
     def toggle_color_mode(self, colorblind_mode):
+        self._colorblind_mode = colorblind_mode
+
         if colorblind_mode:
             # Change the CORRECT_COLOR and PRESENT_COLOR variables for colorblind mode
             CORRECT_COLOR = "blue"
@@ -226,8 +239,7 @@ class WordleGWindow:
                 elif current_color == "#CCBB66":
                     self.set_square_color(row, col, PRESENT_COLOR)
 
-        # Save color preference for the next row
-        self._color_preference = (CORRECT_COLOR, PRESENT_COLOR)
+
 
 
     def save_color_preference(self):
@@ -238,6 +250,16 @@ class WordleGWindow:
         # Apply the saved color preference for the next row
         CORRECT_COLOR, PRESENT_COLOR = self._color_preference
 
+        # Update colors for existing squares
+        for row in range(N_ROWS):
+            for col in range(N_COLS):
+                current_color = self.get_square_color(row, col)
+                if current_color == "#66BB66":
+                    self.set_square_color(row, col, CORRECT_COLOR)
+                elif current_color == "#CCBB66":
+                    self.set_square_color(row, col, PRESENT_COLOR)
+
+
     def create_toggle_button(self):
         toggle_button = tkinter.Button(self._canvas, text="Toggle Color Mode", command=self.toggle_color_mode_button)
         toggle_button.place(x=CANVAS_WIDTH / 2 - 75, y=CANVAS_HEIGHT - BOTTOM_MARGIN - KEY_HEIGHT - KEY_YSEP)
@@ -246,8 +268,8 @@ class WordleGWindow:
     def toggle_color_mode_button(self):
         colorblind_mode = not self._colorblind_mode
         self.toggle_color_mode(colorblind_mode)
-        self._colorblind_mode = colorblind_mode
-        self.save_color_preference()
+
+
 
 
 class WordleSquare:
