@@ -24,19 +24,27 @@ def wordle():
         # with a color that shows if it matches in some way with the randomized word
 
         # MAKE SURE THAT LETTER IS NOT DONE 2x when it already was used
+        numPresent = 0
+        # Initialize a set to keep track of used letters
+        used_letters = set()
+
         if s.lower() in FIVE_LETTER_WORDS:
             for col, char in enumerate(random_word):
                 if s[col].lower() == char.lower():
                     gw.set_square_color(gw.get_current_row(), col, CORRECT_COLOR)
-                elif s[col].lower() in random_word.lower():
+                    # Mark the letter as used
+                    used_letters.add(s[col].lower())
+                elif s[col].lower() in random_word.lower() and s[col].lower() not in used_letters:
                     gw.set_square_color(gw.get_current_row(), col, PRESENT_COLOR)
+                    # Mark the letter as used
+                    used_letters.add(s[col].lower())
                 else:
                     gw.set_square_color(gw.get_current_row(), col, MISSING_COLOR)
 
             # Check if the user guessed the entire word correctly
             if s.lower() == word.lower():
                 gw.show_message("Congratulations! You guessed the word!")
-    
+
             # Move on to the next row
             next_row = gw.get_current_row() + 1
             if next_row < N_ROWS:
@@ -46,6 +54,7 @@ def wordle():
 
         else:
             gw.show_message("Not in word list")
+
 
     random_word = random.choice(FIVE_LETTER_WORDS)
 
