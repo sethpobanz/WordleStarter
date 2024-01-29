@@ -7,8 +7,6 @@ graphical display for the Wordle project.
 
 import atexit
 import keyboard
-
-
 import math
 import time
 import tkinter
@@ -267,7 +265,7 @@ class WordleGWindow:
 
     def create_toggle_button(self):
         toggle_button = tkinter.Button(self._canvas, text="Toggle Color Mode", command=self.toggle_color_mode_button)
-        toggle_button.place(x=CANVAS_WIDTH / 2 - 75, y=CANVAS_HEIGHT - BOTTOM_MARGIN - KEY_HEIGHT - KEY_YSEP)
+        toggle_button.place(x=CANVAS_WIDTH / 2 - 75, y=TOP_MARGIN)
         return toggle_button
 
     def toggle_color_mode_button(self):
@@ -281,12 +279,12 @@ class WordleSquare:
 
     def __init__(self, canvas, row, col):
         x0 = (CANVAS_WIDTH - BOARD_WIDTH) / 2 + col * SQUARE_DELTA
-        y0 = TOP_MARGIN + row * SQUARE_DELTA
+        y0 = TOP_MARGIN + BOTTOM_MARGIN + row * SQUARE_DELTA
         x1 = x0 + SQUARE_SIZE
         y1 = y0 + SQUARE_SIZE
         self._canvas = canvas
         self._ch = " "
-        self._color = UNKNOWN_COLOR;
+        self._color = UNKNOWN_COLOR
         self._frame = canvas.create_rectangle(x0, y0, x1, y1)
         self._text = canvas.create_text(x0 + SQUARE_SIZE / 2,
                                         y0 + SQUARE_SIZE / 2,

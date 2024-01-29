@@ -10,7 +10,6 @@ def wordle():
     gw = WordleGWindow()
     toggle_button = gw.create_toggle_button()
 
-
     # occurs only when user presses/selects "Enter"
     def enter_action(s, random_word): 
 
