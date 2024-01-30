@@ -27,14 +27,17 @@ def wordle():
         # Initialize a set to keep track of used letters
         used_letters = set()
 
+        correct_color = "blue" if gw._colorblind_mode else CORRECT_COLOR
+        present_color = "orange" if gw._colorblind_mode else PRESENT_COLOR
+
         if s.lower() in FIVE_LETTER_WORDS:
             for col, char in enumerate(random_word):
                 if s[col].lower() == char.lower():
-                    gw.set_square_color(gw.get_current_row(), col, CORRECT_COLOR)
+                    gw.set_square_color(gw.get_current_row(), col, correct_color)
                     # Mark the letter as used
                     used_letters.add(s[col].lower())
                 elif s[col].lower() in random_word.lower() and s[col].lower() not in used_letters:
-                    gw.set_square_color(gw.get_current_row(), col, PRESENT_COLOR)
+                    gw.set_square_color(gw.get_current_row(), col, present_color)
                     # Mark the letter as used
                     used_letters.add(s[col].lower())
                 else:

@@ -57,7 +57,7 @@ SQUARE_DELTA = SQUARE_SIZE + SQUARE_SEP
 BOARD_WIDTH = N_COLS * SQUARE_SIZE + (N_COLS - 1) * SQUARE_SEP
 BOARD_HEIGHT = N_ROWS * SQUARE_SIZE + (N_ROWS - 1) * SQUARE_SEP
 MESSAGE_X = CANVAS_WIDTH / 2
-MESSAGE_Y = TOP_MARGIN + BOARD_HEIGHT + MESSAGE_SEP
+MESSAGE_Y = TOP_MARGIN + BOARD_HEIGHT + MESSAGE_SEP + 35
 
 class WordleGWindow:
     """This class creates the Wordle window."""
@@ -76,7 +76,7 @@ class WordleGWindow:
             keys = { }
             nk = len(KEY_LABELS[0])
             h = KEY_HEIGHT
-            y0 = CANVAS_HEIGHT - BOTTOM_MARGIN - 3 * KEY_HEIGHT - 2 * KEY_YSEP
+            y0 = CANVAS_HEIGHT - BOTTOM_MARGIN - 3 * KEY_HEIGHT - 2 * KEY_YSEP + 25
             for row in range(len(KEY_LABELS)):
                 y = y0 + row * (KEY_HEIGHT + KEY_YSEP)
                 x = (CANVAS_WIDTH - nk * KEY_WIDTH - (nk - 1) * KEY_XSEP) / 2
@@ -243,8 +243,6 @@ class WordleGWindow:
                     self.set_square_color(row, col, PRESENT_COLOR)
 
 
-
-
     def save_color_preference(self):
         # Save the color preference for the next row
         self._color_preference = (CORRECT_COLOR, PRESENT_COLOR)
@@ -264,8 +262,10 @@ class WordleGWindow:
 
 
     def create_toggle_button(self):
-        toggle_button = tkinter.Button(self._canvas, text="Toggle Color Mode", command=self.toggle_color_mode_button)
-        toggle_button.place(x=CANVAS_WIDTH / 2 - 75, y=TOP_MARGIN)
+        toggle_button = tkinter.Button(self._canvas, text="Colorblind Mode", command=self.toggle_color_mode_button)
+        button_width = 100  # Adjust the width as needed
+        x_coordinate = (CANVAS_WIDTH - button_width) / 2
+        toggle_button.place(x=x_coordinate, y=TOP_MARGIN)
         return toggle_button
 
     def toggle_color_mode_button(self):
@@ -279,7 +279,7 @@ class WordleSquare:
 
     def __init__(self, canvas, row, col):
         x0 = (CANVAS_WIDTH - BOARD_WIDTH) / 2 + col * SQUARE_DELTA
-        y0 = TOP_MARGIN + BOTTOM_MARGIN + row * SQUARE_DELTA
+        y0 = TOP_MARGIN + BOTTOM_MARGIN + row * SQUARE_DELTA 
         x1 = x0 + SQUARE_SIZE
         y1 = y0 + SQUARE_SIZE
         self._canvas = canvas
